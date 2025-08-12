@@ -1,1 +1,57 @@
-<p>coin-list works!</p>
+<div>
+  <div class="flex items-center justify-between">
+    <div class="flex flex-wrap items-center gap-2">
+      <button class="btn btn-success btn-sm">All</button>
+      <button class="btn btn-ghost btn-sm">Highlights</button>
+      <button class="btn btn-ghost btn-sm">Categories</button>
+      <button class="btn btn-ghost btn-sm">
+        Airdropped Tokens by NFT Projects
+      </button>
+      <button class="btn btn-ghost btn-sm">Binance HODLer Airdrops</button>
+      <button class="btn btn-ghost btn-sm">Automated Market Maker (AMM)</button>
+    </div>
+    <div class="flex items-center gap-3">
+      <label class="input input-bordered items-center gap-2 w-36 md:w-64">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="h-4 w-4 opacity-60"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.3-4.3" />
+        </svg>
+        <input type="text" placeholder="Search" class="grow" />
+      </label>
+    </div>
+  </div>
+
+  <div class="divider my-0"></div>
+
+  <div class="card bg-base-100 shadow">
+    <div class="card-body">
+      <div
+        class="flex items-center justify-between text-xs md:text-sm font-medium opacity-70"
+      >
+        <div class="w-6">#</div>
+        <div class="flex-1">Coin</div>
+        <div class="w-24 text-right">Price</div>
+        <div class="w-16 text-right">1h</div>
+        <div class="w-16 text-right">24h</div>
+        <div class="w-16 text-right">7d</div>
+        <div class="hidden md:block w-32 text-right">24h Volume</div>
+        <div class="hidden md:block w-32 text-right">Market Cap</div>
+        <div class="hidden lg:block w-40 text-right">Last 7 Days</div>
+      </div>
+      <div class="mt-3">
+        <div class="skeleton h-10 w-full"></div>
+        <div class="skeleton h-10 w-full mt-2"></div>
+        <div class="skeleton h-10 w-full mt-2"></div>
+      </div>
+    </div>
+  </div>
+</div>

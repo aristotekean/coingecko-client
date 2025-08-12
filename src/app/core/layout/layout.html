@@ -1,0 +1,93 @@
+<div class="min-h-screen bg-base-100">
+  <div class="navbar bg-base-100 shadow-sm">
+    <div class="navbar-start">
+      <a class="btn btn-ghost text-xl">
+        <img
+          src="https://cdn.freebiesupply.com/logos/large/2x/new-york-lizards-2-logo-svg-vector.svg"
+          alt="Lizard Squad"
+          class="h-6 w-6"
+        />
+        <span class="hidden md:inline">Lizard Squad</span>
+      </a>
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="h-5 w-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+            />
+          </svg>
+        </div>
+        <ul
+          tabindex="0"
+          class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-56 p-2 shadow"
+        >
+          <li><a>Cryptocurrencies</a></li>
+          <li><a>Exchanges</a></li>
+          <li><a>NFT</a></li>
+          <li><a>Learn</a></li>
+          <li><a>Products</a></li>
+          <li><a>API</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+      <ul class="menu menu-horizontal px-1">
+        <li><a>Cryptocurrencies</a></li>
+        <li><a>Exchanges</a></li>
+        <li><a>NFT</a></li>
+        <li><a>Learn</a></li>
+        <li><a>Products</a></li>
+        <li><a>API</a></li>
+      </ul>
+    </div>
+    <div class="navbar-end gap-2">
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+          <div class="w-9 rounded-full">
+            <img
+              alt="avatar"
+              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+            />
+          </div>
+        </div>
+        <ul
+          tabindex="0"
+          class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+        >
+          <li>
+            <a class="justify-between"
+              >Profile <span class="badge">New</span></a
+            >
+          </li>
+          <li><a>Settings</a></li>
+          <li><a>Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <main class="mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8">
+    <section class="py-6 md:py-8">
+      <h1 class="text-2xl md:text-3xl font-bold">
+        Unleash the Crypto Lizards!
+      </h1>
+      <p class="mt-2 text-sm opacity-70">
+        Dive into the vibrant world of crypto, where fortunes shift faster than
+        a lizard's tongue. Explore the market, track the trends, and join the
+        Lizard Squad in conquering the digital frontier.
+      </p>
+    </section>
+    <section class="flex flex-col gap-3">
+      <router-outlet />
+    </section>
+  </main>
+</div>
