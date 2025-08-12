@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CoinDetailDataClientService } from './coin-detail-data-client.service';
-import { Coin } from '../../shared/models/coin.model';
+import { Coin } from '../coin-list/coin.model';
 
 @Component({
   selector: 'app-coin-detail',

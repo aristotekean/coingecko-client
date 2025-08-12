@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { ToastService } from '../../shared/services/toast.service';
-import { Coin } from '../../shared/models/coin.model';
+import { Coin } from './coin.model';
 import { catchError } from 'rxjs';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 

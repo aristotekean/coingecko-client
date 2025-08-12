@@ -1,6 +1,6 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { CoinListDataClientService } from './coin-list-data-client.service';
-import { Coin } from '../../shared/models/coin.model';
+import { Coin } from './coin.model';
 import {
   TableComponent,
   TableColumn,
