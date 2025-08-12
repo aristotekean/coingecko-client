@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { CoinList } from './features/coin-list/coin-list';
-import { CoinDetail } from './features/coin-detail/coin-detail';
 
 export const routes: Routes = [
   {
@@ -8,7 +7,13 @@ export const routes: Routes = [
     component: CoinList,
   },
   {
+    path: '',
+    loadComponent: () =>
+      import('./features/coin-list/coin-list').then((c) => c.CoinList),
+  },
+  {
     path: 'coin/:id',
-    component: CoinDetail,
+    loadComponent: () =>
+      import('./features/coin-detail/coin-detail').then((c) => c.CoinDetail),
   },
 ];
