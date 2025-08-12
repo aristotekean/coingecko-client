@@ -1,1 +1,341 @@
-<p>coin-detail works!</p>
+@let c = coin(); @if (loading()) {
+<div class="flex justify-center py-16">
+  <span class="loading loading-spinner loading-lg"></span>
+</div>
+} @else if (!c) {
+<div class="alert alert-info">
+  <span>No coin data available.</span>
+</div>
+} @else {
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
+    <div class="flex items-start gap-4">
+      <div class="avatar">
+        <div
+          class="w-16 rounded-full ring ring-base-200 ring-offset-base-100 ring-offset-2"
+        >
+          <img [src]="c.image.large" [alt]="c.name" />
+        </div>
+      </div>
+      <div class="flex-1">
+        <div class="flex flex-wrap items-center gap-2">
+          <h2 class="card-title text-2xl">{{ c.name }}</h2>
+          <span class="badge badge-neutral uppercase">{{ c.symbol }}</span>
+          @if (c.market_cap_rank || c.market_data.market_cap_rank) {
+          <span class="badge badge-primary"
+            >Rank #{{ c.market_cap_rank || c.market_data.market_cap_rank
+            }}</span
+          >
+          }
+        </div>
+        @if (c.categories.length) {
+        <div class="mt-2 flex flex-wrap gap-2">
+          @for (cat of c.categories; track cat) {
+          <span class="badge badge-ghost">{{ cat }}</span>
+          }
+        </div>
+        }
+      </div>
+    </div>
+
+    <div class="mt-6 grid gap-4 md:grid-cols-3">
+      <div class="stats bg-base-200 shadow">
+        <div class="stat">
+          <div class="stat-title">Price (USD)</div>
+          <div class="stat-value text-2xl">
+            {{ c.market_data.current_price['usd'] | currency:'USD':'symbol' }}
+          </div>
+          <div class="stat-desc flex items-center gap-2">
+            <span>24h</span>
+            <span
+              class="badge"
+              [class.badge-success]="(c.market_data.price_change_percentage_24h || 0) >= 0"
+              [class.badge-error]="(c.market_data.price_change_percentage_24h || 0) < 0"
+            >
+              {{ c.market_data.price_change_percentage_24h | percent:'1.2-2' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats bg-base-200 shadow">
+        <div class="stat">
+          <div class="stat-title">Market Cap</div>
+          <div class="stat-value text-2xl">
+            {{ c.market_data.market_cap['usd'] | currency:'USD':'symbol' }}
+          </div>
+          <div class="stat-desc">
+            24h: {{ c.market_data.market_cap_change_percentage_24h |
+            percent:'1.2-2' }}
+          </div>
+        </div>
+      </div>
+
+      <div class="stats bg-base-200 shadow">
+        <div class="stat">
+          <div class="stat-title">24h Volume</div>
+          <div class="stat-value text-2xl">
+            {{ c.market_data.total_volume['usd'] | currency:'USD':'symbol' }}
+          </div>
+          <div class="stat-desc">
+            FDV: {{ c.market_data.fully_diluted_valuation['usd'] |
+            currency:'USD':'symbol' }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 grid gap-4 grid-cols-1 lg:grid-cols-3">
+      <!-- Combined Supply & Genesis Info (1/3 width) -->
+      <div class="lg:col-span-1">
+        <div class="card bg-base-200 shadow h-full">
+          <div class="card-body">
+            <h3 class="card-title flex items-center gap-2 mb-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-5 h-5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125S3.75 19.903 3.75 17.625V6.375"
+                />
+              </svg>
+              Supply & Info
+            </h3>
+
+            <!-- Supply Stats -->
+            <div class="stats stats-vertical bg-base-100 shadow mb-4">
+              <div class="stat">
+                <div class="stat-title">Circulating Supply</div>
+                <div class="stat-value text-lg">
+                  {{ c.market_data.circulating_supply | number:'1.0-0' }}
+                </div>
+              </div>
+              <div class="stat">
+                <div class="stat-title">Total Supply</div>
+                <div class="stat-value text-lg">
+                  {{ c.market_data.total_supply | number:'1.0-0' }}
+                </div>
+              </div>
+              <div class="stat">
+                <div class="stat-title">Max Supply</div>
+                <div class="stat-value text-lg">
+                  {{ c.market_data.max_supply ? (c.market_data.max_supply |
+                  number:'1.0-0') : '∞' }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Genesis & Technical Info -->
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-base-content/70"
+                  >Genesis Date</span
+                >
+                <span class="font-semibold">{{ c.genesis_date || '—' }}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-base-content/70"
+                  >Block Time</span
+                >
+                <span class="font-semibold"
+                  >{{ c.block_time_in_minutes }} min</span
+                >
+              </div>
+              @if (c.hashing_algorithm) {
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-base-content/70"
+                  >Algorithm</span
+                >
+                <span class="font-semibold">{{ c.hashing_algorithm }}</span>
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Performance Card (2/3 width) -->
+      <div class="lg:col-span-2">
+        <div class="card bg-base-200 shadow h-full">
+          <div class="card-body">
+            <h3 class="card-title flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-5 h-5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M2.25 18L9 11.25l4.306 4.306a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.94"
+                />
+              </svg>
+              Performance Overview
+            </h3>
+            <div
+              class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7 gap-3 mt-4"
+            >
+              @let performanceData = [ { period: '1h', value:
+              c.market_data.price_change_percentage_1h_in_currency['usd'] || 0,
+              label: '1 Hour' }, { period: '24h', value:
+              c.market_data.price_change_percentage_24h || 0, label: '24 Hours'
+              }, { period: '7d', value: c.market_data.price_change_percentage_7d
+              || 0, label: '7 Days' }, { period: '30d', value:
+              c.market_data.price_change_percentage_30d || 0, label: '30 Days'
+              }, { period: '60d', value:
+              c.market_data.price_change_percentage_60d || 0, label: '60 Days'
+              }, { period: '200d', value:
+              c.market_data.price_change_percentage_200d || 0, label: '200 Days'
+              }, { period: '1y', value: c.market_data.price_change_percentage_1y
+              || 0, label: '1 Year' } ]; @for (perf of performanceData; track
+              perf.period) {
+              <div
+                class="tooltip"
+                [attr.data-tip]="perf.label + ' performance'"
+              >
+                <div
+                  class="bg-base-100 rounded-lg p-3 border transition-all hover:shadow-md"
+                >
+                  <div class="flex items-center justify-between mb-2">
+                    <span
+                      class="text-xs font-medium text-base-content/70 uppercase tracking-wide"
+                      >{{ perf.period }}</span
+                    >
+                    @if (perf.value >= 0) {
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-4 h-4 text-success"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 01-1.08 1.04L10.75 5.612V16.25A.75.75 0 0110 17z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    } @else {
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-4 h-4 text-error"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    }
+                  </div>
+                  <div class="text-center">
+                    <div
+                      class="text-lg font-bold"
+                      [class.text-success]="perf.value >= 0"
+                      [class.text-error]="perf.value < 0"
+                    >
+                      {{ perf.value | percent:'1.0-0' }}
+                    </div>
+                    <div class="w-full bg-base-300 rounded-full h-1.5 mt-2">
+                      <div
+                        class="h-1.5 rounded-full transition-all duration-300"
+                        [class.bg-success]="perf.value >= 0"
+                        [class.bg-error]="perf.value < 0"
+                        [style.width.%]="Math.min(Math.abs(perf.value), 100)"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              }
+            </div>
+
+            <div class="mt-6 flex flex-wrap gap-2 justify-center">
+              <div class="flex items-center gap-1 text-xs">
+                <div class="w-3 h-3 bg-success rounded-full"></div>
+                <span>Positive Performance</span>
+              </div>
+              <div class="flex items-center gap-1 text-xs">
+                <div class="w-3 h-3 bg-error rounded-full"></div>
+                <span>Negative Performance</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 card bg-base-200">
+      <div class="card-body">
+        <h3 class="card-title">Links</h3>
+        <div class="flex flex-wrap gap-2">
+          @if (c.links.homepage.length && c.links.homepage[0]) {
+          <a
+            class="btn btn-sm btn-outline"
+            target="_blank"
+            rel="noopener noreferrer"
+            [href]="c.links.homepage[0]"
+            >Website</a
+          >
+          } @if (c.links.whitepaper) {
+          <a
+            class="btn btn-sm btn-outline"
+            target="_blank"
+            rel="noopener noreferrer"
+            [href]="c.links.whitepaper"
+            >Whitepaper</a
+          >
+          } @if (c.links.subreddit_url) {
+          <a
+            class="btn btn-sm btn-outline"
+            target="_blank"
+            rel="noopener noreferrer"
+            [href]="c.links.subreddit_url"
+            >Reddit</a
+          >
+          } @if (c.links.twitter_screen_name) {
+          <a
+            class="btn btn-sm btn-outline"
+            target="_blank"
+            rel="noopener noreferrer"
+            [href]="'https://twitter.com/' + c.links.twitter_screen_name"
+            >Twitter</a
+          >
+          } @if (c.links.repos_url.github.length && c.links.repos_url.github[0])
+          {
+          <a
+            class="btn btn-sm btn-outline"
+            target="_blank"
+            rel="noopener noreferrer"
+            [href]="c.links.repos_url.github[0]"
+            >GitHub</a
+          >
+          }
+        </div>
+      </div>
+    </div>
+
+    @if (c.description.en) {
+    <div class="mt-6 card bg-base-200">
+      <div class="card-body">
+        <h3 class="card-title">About {{ c.name }}</h3>
+        <div
+          class="text-sm leading-relaxed"
+          [innerHTML]="c.description.en"
+        ></div>
+      </div>
+    </div>
+    }
+  </div>
+</div>
+}

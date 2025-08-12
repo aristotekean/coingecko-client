@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { ToastService } from '../../shared/services/toast.service';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { catchError, Observable, tap } from 'rxjs';
-import { CoinDetail } from './coin-detail';
+import { ICoinDetail } from './coin-detail.model';
 
 const API_URL = environment.apiUrl;
 
@@ -18,8 +18,8 @@ export class CoinDetailDataClientService {
   private toastService = inject(ToastService);
   private errorHandler = inject(ErrorHandlerService);
 
-  getById(id: string | number): Observable<CoinDetail> {
-    return this.http.get<CoinDetail>(`${API_URL}${this.API_PATH}/${id}`).pipe(
+  getById(id: string | number): Observable<ICoinDetail> {
+    return this.http.get<ICoinDetail>(`${API_URL}${this.API_PATH}/${id}`).pipe(
       tap(() =>
         this.toastService.showSuccess('Coin loaded successfully', 'Success')
       ),
