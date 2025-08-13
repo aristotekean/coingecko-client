@@ -41,7 +41,11 @@
         <div class="skeleton h-10 w-full mt-2"></div>
       </div>
       }
-      <app-table [data]="coins()" [columns]="columns()" />
+      <app-table
+        [data]="coins()"
+        [columns]="columns()"
+        (rowClick)="onCoinClick($event)"
+      />
     </div>
   </div>
 </div>

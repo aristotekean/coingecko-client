@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { CdkTableModule } from '@angular/cdk/table';
 import { NgClass } from '@angular/common';
 
@@ -35,13 +35,19 @@ export interface TableColumn<T = unknown> {
       </ng-container>
       }
       <tr cdk-header-row *cdkHeaderRowDef="displayedColumns()"></tr>
-      <tr cdk-row *cdkRowDef="let row; columns: displayedColumns()"></tr>
+      <tr
+        cdk-row
+        *cdkRowDef="let row; columns: displayedColumns()"
+        (click)="onRowClick(row)"
+        class="cursor-pointer hover:bg-base-200"
+      ></tr>
     </table>
   `,
 })
 export class TableComponent<T = unknown> {
   readonly data = input<T[]>([]);
   readonly columns = input<TableColumn<T>[]>([]);
+  readonly rowClick = output<T>();
 
   readonly displayedColumns = computed(() => this.columns().map((c) => c.key));
 
@@ -58,5 +64,9 @@ export class TableComponent<T = unknown> {
     row: T
   ): string | string[] | Record<string, boolean> | undefined {
     return column.cellClass ? column.cellClass(row) : undefined;
+  }
+
+  onRowClick(row: T): void {
+    this.rowClick.emit(row);
   }
 }

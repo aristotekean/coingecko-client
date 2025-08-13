@@ -1,4 +1,5 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { CoinListDataClientService } from './coin-list-data-client.service';
 import { Coin } from './coin.model';
 import {
@@ -14,6 +15,7 @@ import {
 })
 export class CoinList implements OnInit {
   private readonly dataClient = inject(CoinListDataClientService);
+  private readonly router = inject(Router);
 
   readonly loading = signal<boolean>(false);
   readonly coins = signal<Coin[]>([]);
@@ -58,5 +60,9 @@ export class CoinList implements OnInit {
       error: () => this.loading.set(false),
       complete: () => this.loading.set(false),
     });
+  }
+
+  onCoinClick(coin: Coin): void {
+    this.router.navigate(['/coin', coin.id]);
   }
 }
