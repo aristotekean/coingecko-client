@@ -47,15 +47,20 @@ export class CoinList implements OnInit, OnDestroy {
     {
       key: 'current_price',
       header: 'Price',
-      cell: (c) => `$${c.current_price.toLocaleString()}`,
+      cell: (c) =>
+        c.current_price > 0 ? `$${c.current_price.toLocaleString()}` : 'N/A',
     },
     {
       key: 'price_change_percentage_24h',
       header: '24h',
-      cell: (c) => `${c.price_change_percentage_24h?.toFixed(2)}%`,
+      cell: (c) =>
+        c.current_price > 0
+          ? `${c.price_change_percentage_24h.toFixed(2)}%`
+          : 'N/A',
       cellClass: (c) => ({
-        'text-success': (c.price_change_percentage_24h ?? 0) > 0,
-        'text-error': (c.price_change_percentage_24h ?? 0) < 0,
+        'text-success':
+          c.price_change_percentage_24h > 0 && c.current_price > 0,
+        'text-error': c.price_change_percentage_24h < 0 && c.current_price > 0,
       }),
     },
   ]);
@@ -86,26 +91,26 @@ export class CoinList implements OnInit, OnDestroy {
   private setupSearch(): void {
     this.searchControl.valueChanges
       .pipe(
-        debounceTime(500), // Wait 500ms after user stops typing
+        debounceTime(300), // Wait 300ms after user stops typing for better real-time feel
         distinctUntilChanged(), // Only emit when the value actually changes
+        switchMap((searchTerm) => {
+          if (searchTerm && searchTerm.trim()) {
+            this.isSearching.set(true);
+            return this.dataClient.searchCoins(searchTerm.trim());
+          } else {
+            this.isSearching.set(false);
+            return this.dataClient.getAll(); // Load all coins when search is empty
+          }
+        }),
         takeUntil(this.destroy$)
       )
-      .subscribe((searchTerm) => {
-        if (searchTerm && searchTerm.trim()) {
-          this.searchCoins(searchTerm.trim());
-        } else {
-          this.loadCoins(); // Load all coins when search is empty
-        }
+      .subscribe({
+        next: (results: Coin[]) => {
+          this.coins.set(results ?? []);
+          this.isSearching.set(false);
+        },
+        error: () => this.isSearching.set(false),
       });
-  }
-
-  private searchCoins(searchTerm: string): void {
-    this.isSearching.set(true);
-    this.dataClient.searchByName(searchTerm).subscribe({
-      next: (results: Coin[]) => this.coins.set(results ?? []),
-      error: () => this.isSearching.set(false),
-      complete: () => this.isSearching.set(false),
-    });
   }
 
   clearSearch(): void {
