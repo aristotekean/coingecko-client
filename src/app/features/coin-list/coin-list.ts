@@ -24,7 +24,7 @@ export class CoinList implements OnInit {
     { key: 'market_cap_rank', header: '#', headerClass: 'w-8' },
     {
       key: 'image',
-      header: '',
+      header: 'Icon',
       imageSrc: (c) => c.image,
     },
     {
