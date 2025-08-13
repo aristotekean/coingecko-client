@@ -39,4 +39,35 @@ export class CoinListDataClientService {
       })
     );
   }
+
+  searchByName(coinName: string): Observable<Coin[]> {
+    // URL-encode the coin name to handle spaces (e.g., "Binance Coin" becomes "Binance%20Coin")
+    const encodedName = encodeURIComponent(coinName);
+
+    const params = new HttpParams()
+      .set('vs_currency', 'usd')
+      .set('names', encodedName)
+      .set('order', 'market_cap_desc')
+      .set('per_page', '25')
+      .set('page', '1');
+
+    const options = { params };
+
+    return this.http.get<Coin[]>(`${API_URL}${this.API_PATH}`, options).pipe(
+      tap((results) => {
+        const message =
+          results.length > 0
+            ? `Found ${results.length} result(s) for "${coinName}"`
+            : `No results found for "${coinName}"`;
+        this.toastService.showSuccess(message, 'Search Complete');
+      }),
+      catchError((error) => {
+        this.toastService.showError(
+          `Error searching for "${coinName}"`,
+          'Search Error'
+        );
+        return this.errorHandler.handleError(error);
+      })
+    );
+  }
 }
