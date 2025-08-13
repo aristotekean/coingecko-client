@@ -2,6 +2,20 @@
 
 An Angular 20 single‑page app that browses cryptocurrency data from the public CoinGecko v3 API. It shows a paged market list with search and per‑coin detail, using standalone components, Angular Signals, and CDK Table.
 
+### Live demo
+
+[coingecko-client-lyart.vercel.app](https://coingecko-client-lyart.vercel.app/)
+
+### Documentation
+
+[aristotekean.github.io/coingecko-client](https://aristotekean.github.io/coingecko-client/)
+
+### Video tutorial
+
+Watch a complete walkthrough of the application features and setup:
+
+[![CoinGecko Client Tutorial](https://img.shields.io/badge/Watch-Video%20Tutorial-blue?style=for-the-badge&logo=loom)](https://www.loom.com/share/c0e29724b3f94f3a843289f12f8fe7d8)
+
 ### Tech stack
 
 - **Angular**: 20 (standalone components, signals)
@@ -17,11 +31,6 @@ An Angular 20 single‑page app that browses cryptocurrency data from the public
 - **Toasts**: Success/error notifications on data operations
 - **Error handling**: Centralized `ErrorHandlerService`
 
-### Video tutorial
-
-Watch a complete walkthrough of the application features and setup:
-
-[![CoinGecko Client Tutorial](https://img.shields.io/badge/Watch-Video%20Tutorial-blue?style=for-the-badge&logo=loom)](https://www.loom.com/share/c0e29724b3f94f3a843289f12f8fe7d8)
 
 ### Getting started
 
@@ -32,6 +41,12 @@ Watch a complete walkthrough of the application features and setup:
 
 ```bash
 npm install
+```
+
+Alternatively:
+
+```bash
+npm ci --legacy-peer-deps
 ```
 
 3. Start the dev server
